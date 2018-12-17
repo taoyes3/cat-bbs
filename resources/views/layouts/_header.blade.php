@@ -41,7 +41,12 @@
 
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="{{ route('logout') }}"
+                                <a href="{{ route('users.edit', Auth::user()) }}">
+                                    编辑资料
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#"
                                    onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();">
                                     退出登录
