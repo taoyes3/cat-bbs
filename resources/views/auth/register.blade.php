@@ -75,6 +75,7 @@
                                             <strong>{{ $errors->first('captcha') }}</strong>
                                         </span>
                                     @endif
+
                                 </div>
                             </div>
 
