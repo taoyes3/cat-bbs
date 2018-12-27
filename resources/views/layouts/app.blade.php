@@ -6,6 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>@yield('title', 'Cat BBS')</title>
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        @yield('styles')
     </head>
 
     <body>
@@ -19,5 +20,6 @@
         </div>
 
         <script src="{{ asset('js/app.js') }}"></script>
+        @yield('scripts')
     </body>
 </html>
