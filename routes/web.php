@@ -27,7 +27,4 @@ Route::post('upload_image', 'TopicsController@uploadImage')->name('topics.upload
 
 Route::resource('replies', 'RepliesController', ['only' => ['store', 'destroy']]);
 
-Route::get('test', function (\App\Models\Reply $reply) {
-    dd($reply->topic);
-    return 123;
-});
+Route::resource('notifications', 'NotificationsController', ['only' => ['index']]);

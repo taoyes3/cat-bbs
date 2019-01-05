@@ -41,4 +41,24 @@ class User extends Authenticatable
     {
         return $this->hasMany(Reply::class);
     }
+
+    public function topicNotify($instance)
+    {
+        if ($this->id == \Auth::id()) {
+            return;
+        }
+
+        $this->increment('notification_count');
+
+        $this->notify($instance);
+    }
+
+    public function markAsRead()
+    {
+        $this->notification_count = 0;
+        $this->save();
+
+        $this->unreadNotifications->markAsRead();
+    }
+    
 }
