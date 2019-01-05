@@ -48,10 +48,4 @@ class Topic extends Model
     {
         return $this->hasMany(Reply::class);
     }
-
-    public function test()
-    {
-        return 233;
-    }
-
 }
