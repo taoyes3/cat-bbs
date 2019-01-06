@@ -60,5 +60,10 @@ class User extends Authenticatable
 
         $this->unreadNotifications->markAsRead();
     }
-    
+
+    public function getAvatarAttribute($value)
+    {
+        return strpos($value, 'http') === false ? config('app.url') . $value : $value;
+    }
+
 }
