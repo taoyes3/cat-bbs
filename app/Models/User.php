@@ -68,4 +68,18 @@ class User extends Authenticatable
         return strpos($value, 'http') === false ? config('app.url') . $value : $value;
     }
 
+    public function setPasswordAttribute($value)
+    {
+        if (strlen($value) != 60) {
+            $value = bcrypt($value);
+        }
+
+        $this->attributes['password'] = $value;
+    }
+
+    public function setAvatarAttribute($value)
+    {
+        $this->attributes['avatar'] = strpos($value, 'http') === false ? config('app.url') . '/uploads/images/avatars/' . $value : $value;
+    }
+
 }
