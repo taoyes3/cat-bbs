@@ -17,4 +17,13 @@ class PagesController extends Controller
         $topics = Topic::withOrder($request->order)->paginate(20);
         return view('topics.index', compact('topics'));
     }
+
+    public function permissionDenied()
+    {
+        if (config('administrator.permission')()) {
+            return redirect(url(config('administrator.uri')), 302);
+        }
+
+        return view('pages.permission_denied');
+    }
 }
