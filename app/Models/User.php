@@ -63,7 +63,7 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($value)
     {
-        return strpos($value, 'http') === false ? config('app.url') . $value : $value;
+        return strpos($value, 'http') === false ? config('app.url') . '/uploads/' . $value : $value;
     }
 
 }
