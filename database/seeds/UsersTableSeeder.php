@@ -22,5 +22,13 @@ class UsersTableSeeder extends Seeder
             'introduction' => 'nothing like the love i have for you.',
         ];
         $user->update($user_data);
+
+        // 初始化用户角色，将1号用户指定为「站长」
+        $user->assignRole('Founder');
+
+        // 将2号用户指定为「管理员」
+        $user = User::find(2);
+        $user->assignRole('Manager');
+
     }
 }
