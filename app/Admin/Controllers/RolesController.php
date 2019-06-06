@@ -2,7 +2,7 @@
 
 namespace App\Admin\Controllers;
 
-use App\Models\User;
+use App\Models\Role;
 use App\Http\Controllers\Controller;
 use Encore\Admin\Controllers\HasResourceActions;
 use Encore\Admin\Form;
@@ -10,7 +10,7 @@ use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 use Encore\Admin\Show;
 
-class UsersController extends Controller
+class RolesController extends Controller
 {
     use HasResourceActions;
 
@@ -23,7 +23,7 @@ class UsersController extends Controller
     public function index(Content $content)
     {
         return $content
-            ->header('用户列表')
+            ->header('列表')
             ->body($this->grid());
     }
 
@@ -36,10 +36,9 @@ class UsersController extends Controller
      */
     public function show($id, Content $content)
     {
-        // User::destroy(10);
-        // dd($user->topics->pluck('id')->all());
         return $content
-            ->header('用户详情')
+            ->header('Detail')
+            ->description('description')
             ->body($this->detail($id));
     }
 
@@ -53,7 +52,7 @@ class UsersController extends Controller
     public function edit($id, Content $content)
     {
         return $content
-            ->header('编辑用户')
+            ->header('编辑角色')
             ->body($this->form()->edit($id));
     }
 
@@ -66,7 +65,8 @@ class UsersController extends Controller
     public function create(Content $content)
     {
         return $content
-            ->header('新增用户')
+            ->header('Create')
+            ->description('description')
             ->body($this->form());
     }
 
@@ -77,14 +77,24 @@ class UsersController extends Controller
      */
     protected function grid()
     {
-        $grid = new Grid(new User);
+        $grid = new Grid(new Role);
 
         $grid->id('Id');
-        $grid->avatar('头像')->image(50, 50);
-        $grid->name('姓名');
-        $grid->email('邮箱');
-        $grid->notification_count('通知数量');
-        $grid->created_at('注册时间');
+        $grid->name('名称');
+        $grid->guard_name('Guard name');
+        $grid->permissions('权限')->display(function ($roles) {
+            $roles = array_map(function ($role) {
+                return "<span class='label label-success'>{$role['name']}</span>";
+            }, $roles);
+
+            return join('&nbsp;', $roles);
+        });
+        $grid->created_at('创建时间');
+        // 自定义按钮
+        $grid->actions(function ($actions) {
+            $actions->disableView(); // 禁用查看
+            $actions->append('<a href=""><i class="fa fa-cog"></i></a>'); // 设置权限
+        });
 
         return $grid;
     }
@@ -97,15 +107,14 @@ class UsersController extends Controller
      */
     protected function detail($id)
     {
-        $show = new Show(User::findOrFail($id));
+        $show = new Show(Role::findOrFail($id));
 
         $show->id('Id');
-        $show->avatar('头像')->image(50, 50);
-        $show->name('姓名');
-        $show->email('邮箱');
-        $show->notification_count('通知数量');
-        $show->introduction('简介');
-        $show->created_at('注册时间');
+        $show->name('Name');
+        $show->guard_name('Guard name');
+        $show->created_at('Created at');
+        $show->updated_at('Updated at');
+
         return $show;
     }
 
@@ -116,23 +125,13 @@ class UsersController extends Controller
      */
     protected function form()
     {
-        $form = new Form(new User);
+        $form = new Form(new Role);
 
-        $form->text('name', '姓名')->rules('required|between:3,25');
-        $form->email('email', '邮箱')->rules(function ($form) {
-            return 'required|unique:users,email,' . $form->model()->id;
-        });
-        $form->password('password', '密码')->rules('required')->default(function ($form) {
-            return $form->model()->password;
-        });
-        $form->image('avatar', '头像')->move('images/avatars');
-        $form->text('introduction', '简介');
+        $form->text('name', 'Name');
+        $form->text('guard_name', 'Guard name');
+        $form->multipleSelect('权限1', '权限')->options([1 => 'foo', 2 => 'bar', 'val' => 'Option name']);
+        // $form->text(permissions(), 'test');
 
-        $form->saving(function (Form $form) {
-            if ($form->password && $form->model()->password != $form->password) {
-                $form->password = bcrypt($form->password);
-            }
-        });
 
         return $form;
     }

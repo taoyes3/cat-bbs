@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
             'name' => '921t',
             'email' => '921t@qq.com',
             'password' => bcrypt('123456'),
-            'avatar' => '/uploads/images/avatars/201812/21/1_1545375846_9gZzIAgisP.jpg',
+            'avatar' => 'images/avatars/201901/23/1_1548209346_QrtR7dq6cz.jpg',
             'introduction' => 'nothing like the love i have for you.',
         ];
         $user->update($user_data);

@@ -14,4 +14,8 @@ Route::group([
 
     $router->resource('users', 'UsersController');
 
+    $router->resource('roles', 'RolesController');
+
+    $router->resource('permissions', 'PermissionsController');
+
 });
